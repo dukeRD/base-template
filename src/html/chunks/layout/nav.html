@@ -1,0 +1,9 @@
+<nav role="navigation">
+    <ul class="nav hide-for-small-only">
+	    {{#each nav}}
+	    		<li class="nav__item">
+	     			<a href="{{link}}.html" class="nav__link {{#ifpage link}}active{{/ifpage}}">{{title}}</a>
+	    		</li>
+			{{/each}}
+    </ul>
+</nav>

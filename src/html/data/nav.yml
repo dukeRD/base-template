@@ -1,0 +1,9 @@
+- title: Главная
+  href:  home
+- title: О нас
+  href:  about
+- title: Услуги
+  href:  services
+- title: Контакты
+  href:  contacts
+
