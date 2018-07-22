@@ -8,6 +8,9 @@ var rimraf      = require('rimraf');
 var panini      = require('panini');
 var gulpIf      = require('gulp-if');
 var imagemin    = require('gulp-imagemin');
+var rollup      = require('rollup-stream');
+var source      = require('vinyl-source-stream');
+var buffer      = require('vinyl-buffer');
 
 var browserSync = require('browser-sync').create();
 
@@ -28,13 +31,6 @@ var path = {
 	}
 }
 
-var scripts = [
-	// path.src.js + 'jquery-3.3.1.min.js',//CDN
- //  path.src.js + 'modernizr-custom.js',
-	// path.src.js + 'slick.min.js',
-	// path.src.js + 'wow.min.js',
-	path.src.js + 'main.js'
-];
 
 gulp.task('sass', function(){
 	return gulp.src(path.src.sass + '*.scss')
@@ -46,17 +42,23 @@ gulp.task('sass', function(){
     .pipe(browserSync.stream());
 });
 
-
 gulp.task('js', function(){
-	return gulp.src(scripts)
-	.pipe(concat('app.js'))
-	.pipe(sourcemaps.init())
-	.pipe(babel({
-            presets: ['env']
-        }))
-  .pipe(sourcemaps.write())
-	.pipe(gulp.dest(path.dist.js));
-});
+	return rollup({
+      input: './src/js/app.js',
+      sourcemap: true,
+      format: 'iife'
+    })
+    .pipe(source('app.js', './src/js'))
+    .pipe(buffer())
+    .pipe(sourcemaps.init({loadMaps: true}))
+    // transform the code further here.
+  	.pipe(babel({
+              presets: ['env']
+          }))
+    //.pipe(rename('index.js'))
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest(path.dist.js));
+})
 
 gulp.task('html', function(){
 	return gulp.src( path.src.html + 'pages/*.html' )
@@ -96,14 +98,13 @@ gulp.task('server', ['sass','js','html','img','fonts'], function() {
     browserSync.init({
 	    server: path.dist.html, port: '8080',
 	    index: "home.html"
-      // proxy: "hoo4.local"
+      // proxy: "site.local"
     });
 
     gulp.watch( path.src.sass + "**/*.scss",                 ['sass']                                        );
     gulp.watch( path.src.js   + "**/*.js",                   ['js','browserSync.reload']                     );
     gulp.watch( path.src.html + "**/*",                      ['html','panini.refresh','browserSync.reload']  );
     gulp.watch( path.src.html + "data/**/*.{json,yml}",      ['html','panini.refresh','browserSync.reload']  );
-    // gulp.watch('src/data/**/*.{json,yml}').on('all', gulp.series(resetPages, pages, browser.reload));
 });
 
 

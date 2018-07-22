@@ -1,5 +1,5 @@
-let test = (ar) =>{
-	console.log(ar)
+function test(ar) {
+	console.log(ar);
 }
 
-module.exports = test;
+export default test;

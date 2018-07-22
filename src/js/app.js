@@ -1,4 +1,4 @@
 console.log('main.js');
-import test from './test';
+import  test from './test';
 
 test('es6')
