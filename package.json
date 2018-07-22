@@ -1,7 +1,7 @@
 {
-  "name": "hoo4.tpl",
+  "name": "base-template",
   "version": "1.0.0",
-  "description": "",
+  "description": "gulp,sass,es6,panini,browser-sync",
   "main": "gulpfile.js",
   "dependencies": {
     "del": "^3.0.0"
