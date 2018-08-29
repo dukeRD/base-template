@@ -102,7 +102,10 @@ gulp.task('server', ['sass','js','html','img','fonts'], function() {
     });
 
     gulp.watch( path.src.sass + "**/*.scss",                 ['sass']                                        );
-    gulp.watch( path.src.js   + "**/*.js",                   ['js','browserSync.reload']                     );
+    // TODO: move to path variable
+    // fix add/del js files
+    gulp.watch( "src/js/**/*.js", {cwd: './'},               ['js','browserSync.reload']                     );
+    // gulp.watch( path.src.js   + "**/*.js",                ['js','browserSync.reload']                     );
     gulp.watch( path.src.html + "**/*",                      ['html','panini.refresh','browserSync.reload']  );
     gulp.watch( path.src.html + "data/**/*.{json,yml}",      ['html','panini.refresh','browserSync.reload']  );
 });
